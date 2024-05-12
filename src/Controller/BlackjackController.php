@@ -21,7 +21,11 @@ class BlackjackController extends AbstractController
     #[\Symfony\Component\Routing\Attribute\Route('/recommendation', methods: ['GET'])]
     public function getRecommendation(Request $request): Response
     {
-        $data = json_decode($request->getContent(), true);
+        try {
+            $data = $request->toArray();
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Invalid JSON data'], Response::HTTP_BAD_REQUEST);
+        }
 
         $playerHand = $this->serializer->deserialize(json_encode($data['player']), Hand::class, 'json');
         $dealerHand = $this->serializer->deserialize(json_encode($data['dealer']), Hand::class, 'json');
