@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Hand;
+use App\Entity\DealerHand;
+use App\Entity\PlayerHand;
 use App\Service\BlackjackDecisionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +28,8 @@ class BlackjackController extends AbstractController
             return $this->json(['error' => 'Invalid JSON data'], Response::HTTP_BAD_REQUEST);
         }
 
-        $playerHand = $this->serializer->deserialize(json_encode($data['player']), Hand::class, 'json');
-        $dealerHand = $this->serializer->deserialize(json_encode($data['dealer']), Hand::class, 'json');
+        $playerHand = $this->serializer->deserialize(json_encode($data['player']), PlayerHand::class, 'json');
+        $dealerHand = $this->serializer->deserialize(json_encode($data['dealer']), DealerHand::class, 'json');
 
         $decision = $this->blackjackDecisionService->getDecision($playerHand, $dealerHand);
 

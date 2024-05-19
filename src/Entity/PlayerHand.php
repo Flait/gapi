@@ -3,7 +3,7 @@ namespace App\Entity;
 
 use App\Enum\CardValueEnum;
 
-class Hand
+class PlayerHand
 {
     /** @var CardValueEnum[] */
     public array $cards = [];
@@ -11,11 +11,6 @@ class Hand
     public function __construct(CardValueEnum ...$cards)
     {
         $this->cards = $cards;
-    }
-
-    public function addCard(CardValueEnum $card): void
-    {
-        $this->cards[] = $card;
     }
 
     public function getCardsCount(): int
