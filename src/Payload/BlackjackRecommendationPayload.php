@@ -8,8 +8,8 @@ use App\Entity\PlayerHand;
 final readonly class BlackjackRecommendationPayload
 {
     public function __construct(
-        public DealerHand $dealerHand,
         public PlayerHand $playerHand,
+        public DealerHand $dealerHand,
     )
     {
     }

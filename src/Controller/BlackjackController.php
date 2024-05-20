@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\DealerHand;
-use App\Entity\PlayerHand;
+use App\Payload\BlackjackRecommendationPayload;
 use App\Service\BlackjackDecisionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 #[\Symfony\Component\Routing\Attribute\Route('/blackjack')]
 class BlackjackController extends AbstractController
@@ -23,19 +21,16 @@ class BlackjackController extends AbstractController
     public function getRecommendation(Request $request): Response
     {
         try {
-            $data = $request->toArray();
+            $payload = $this->serializer->deserialize($request->getContent(), BlackjackRecommendationPayload::class, 'json');
         } catch (\Exception $e) {
             return $this->json(['error' => 'Invalid JSON data'], Response::HTTP_BAD_REQUEST);
         }
 
-        $playerHand = $this->serializer->deserialize(json_encode($data['player']), PlayerHand::class, 'json');
-        $dealerHand = $this->serializer->deserialize(json_encode($data['dealer']), DealerHand::class, 'json');
-
-        $decision = $this->blackjackDecisionService->getDecision($playerHand, $dealerHand);
+        $decision = $this->blackjackDecisionService->getDecision($payload);
 
         return $this->json([
             'recommendation' => $decision,
-            "status" => "success"
+            "status" => "success",
         ]);
     }
 }

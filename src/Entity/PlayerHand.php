@@ -5,26 +5,20 @@ use App\Enum\CardValueEnum;
 
 class PlayerHand
 {
-    /** @var CardValueEnum[] */
-    public array $cards = [];
+    /** @var non-empty-array<CardValueEnum> */
+    public array $cards;
 
-    public function __construct(CardValueEnum ...$cards)
+    /** @param non-empty-array<CardValueEnum> $cards*/
+    public function __construct(array $cards)
     {
         $this->cards = $cards;
     }
 
-    public function getCardsCount(): int
-    {
-        return count($this->cards);
-    }
-
     /**
-     * @return CardValueEnum[]
+     * @return non-empty-array<CardValueEnum>
      */
     public function getCards(): array
     {
         return $this->cards;
     }
-
-
 }
