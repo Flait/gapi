@@ -1,4 +1,4 @@
-name: PHPStan
+name: Tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - '**'
 
 jobs:
-  phpstan:
+  stan:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0' # or the PHP version your project uses
+          php-version: '8.3' # or the PHP version your project uses
           extensions: mbstring, dom, json
 
       - name: Get Composer cache directory
@@ -35,7 +35,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse -l max src tests
