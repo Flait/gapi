@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
-use App\Entity\Hand;
+use App\Entity\DealerHand;
+use App\Entity\PlayerHand;
 use App\Enum\CardValueEnum;
+use App\Payload\BlackjackRecommendationPayload;
 
 class BlackjackDecisionService
 {
@@ -20,26 +22,20 @@ class BlackjackDecisionService
         17 => ['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'], // Player's hand is 17 or more
     ];
 
-    public function getDecision(Hand $playerHandValue, Hand $dealerHand): string
+    public function getDecision(BlackjackRecommendationPayload $payload): string
     {
-        if ($dealerHand->getCardsCount() === 1) {
-            $dealerCardIndex = $dealerHand->cards[0]->getNumericValue() - 2;
-        } else {
-            throw new \Error();
-        }
-
         $playerHandValue = min(
-            max($this->calculateHandTotal($playerHandValue), 11),
+            max($this->calculateHandTotal($payload->playerHand), 11),
             17
         );
 
-        $decisionChar = self::DECISION_MATRIX[$playerHandValue][$dealerCardIndex] ??
+        $decisionChar = self::DECISION_MATRIX[$playerHandValue][$payload->dealerHand->getCard()->getNumericValue() - 2] ??
             throw new \Error();
 
         return $decisionChar === 'H' ? self::HIT : self::STAND;
     }
 
-    public function calculateHandTotal(Hand $hand): int
+    public function calculateHandTotal(PlayerHand $hand): int
     {
         $total = 0;
         $aces = 0;
