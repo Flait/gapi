@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  Stan_and_Unit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+      - name: Set up php 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install dependencies
+        run: composer self-update && composer install && composer dump-autoload
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse -l max src tests
+
+      - name: Run PHPUnit with coverage
+        run: vendor/bin/phpunit --coverage-clover coverage.xml tests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        comment:
+          layout: " diff, flags, files"
+          behavior: default
+          require_changes: false
+          require_base: false
+          require_head: true
+          hide_project_coverage: false

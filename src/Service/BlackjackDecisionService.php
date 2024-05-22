@@ -29,8 +29,7 @@ class BlackjackDecisionService
             17
         );
 
-        $decisionChar = self::DECISION_MATRIX[$playerHandValue][$payload->dealerHand->getCard()->getNumericValue() - 2] ??
-            throw new \Error();
+        $decisionChar = self::DECISION_MATRIX[$playerHandValue][$payload->dealerHand->getCard()->getNumericValue() - 2];
 
         return $decisionChar === 'H' ? self::HIT : self::STAND;
     }

@@ -6,7 +6,7 @@ use App\Enum\CardValueEnum;
 class PlayerHand
 {
     /** @var non-empty-array<CardValueEnum> */
-    public array $cards;
+    private array $cards;
 
     /** @param non-empty-array<CardValueEnum> $cards*/
     public function __construct(array $cards)

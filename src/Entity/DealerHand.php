@@ -17,13 +17,5 @@ class DealerHand
         return $this->card;
     }
 
-    /**
-     * @param CardValueEnum $card
-     */
-    public function setCard(CardValueEnum $card): void
-    {
-        $this->card = $card;
-    }
-
 
 }
