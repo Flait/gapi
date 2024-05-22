@@ -9,7 +9,7 @@ on:
       - '**'
 
 jobs:
-  Stan + Unit:
+  Stan_&_Unit:
     runs-on: ubuntu-latest
 
     steps:
