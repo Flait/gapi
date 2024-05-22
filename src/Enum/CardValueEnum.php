@@ -30,17 +30,7 @@ enum CardValueEnum: string
             self::Eight => 8,
             self::Nine => 9,
             self::Ten, self::Jack, self::Queen, self::King => 10,
-            self::Ace => 11, // Note: Ace can be either 1 or 11 depending on the game context
+            self::Ace => 11,
         };
-    }
-
-    public static function isValid(string $value): bool
-    {
-        foreach (self::cases() as $case) {
-            if ($case->value === $value) {
-                return true;
-            }
-        }
-        return false;
     }
 }

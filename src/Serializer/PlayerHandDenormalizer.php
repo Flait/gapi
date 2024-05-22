@@ -7,7 +7,7 @@ use App\Enum\CardValueEnum;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class PlayerHandDenormalizer implements DenormalizerInterface
+final class PlayerHandDenormalizer implements DenormalizerInterface
 {
     /**
      * @param mixed[] $context
@@ -15,7 +15,7 @@ class PlayerHandDenormalizer implements DenormalizerInterface
     public function denormalize($data, $type, $format = null, array $context = []): PlayerHand
     {
         if (!is_array($data) || !is_array($data['cards']) || empty($data['cards'])) {
-            throw new UnexpectedValueException('Invalid data for PlayerHand.');
+                throw new UnexpectedValueException('Provided cards are invalid');
         }
 
         $cards = [];

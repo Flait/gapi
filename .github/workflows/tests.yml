@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  stan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+      - name: Composer Init
+        uses: php-actions/composer@v6
+        with:
+          php_version: "8.3"
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse -l max src tests
+
+      - name: Run PHPUnit with coverage
+        run: vendor/bin/phpunit --coverage-clover coverage.xml tests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_ORG_TOKEN }}
