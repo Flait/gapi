@@ -9,7 +9,7 @@ on:
       - '**'
 
 jobs:
-  stan:
+  Stan + Unit:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
       - name: Composer Init
         uses: php-actions/composer@v6
         with:
-          php_version: "8.3"
+          php_version: "8.2"
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse -l max src tests
