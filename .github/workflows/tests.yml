@@ -22,10 +22,13 @@ jobs:
           path: ./vendor
           key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-      - name: Composer Init
-        uses: php-actions/composer@v6
+      - name: Set up php 8.2
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: "8.2"
+          php-version: '8.2'
+
+      - name: Install dependencies
+        run: composer self-update && composer install && composer dump-autoload
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse -l max src tests
