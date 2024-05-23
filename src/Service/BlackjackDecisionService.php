@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\DealerHand;
 use App\Entity\PlayerHand;
 use App\Enum\CardValueEnum;
 use App\Payload\BlackjackRecommendationPayload;
